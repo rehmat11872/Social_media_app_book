@@ -52,7 +52,7 @@
                 <!--<p class="mb-2 text-black text-lg"> Register to manage your account </p>-->
                 
 
-                <div>
+                <!-- <div>
                     <style>
                         h5{
                             color: red;
@@ -62,9 +62,10 @@
                     <h5>{{message}}</h5>
                     {% endfor %}
                 </div>
+                 -->
+                 {% include 'common/error_messages.html' %}
                 
-                
-                <form action="" method="POST">
+                <form method="POST">
                     {% csrf_token %}
                     <!--<div class="flex lg:flex-row flex-col lg:space-x-2">
                         <input type="text" placeholder="First Name"  class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">

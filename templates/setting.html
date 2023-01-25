@@ -1,4 +1,5 @@
 {% load static %}
+{% load widget_tweaks %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +45,7 @@
                     </div>
                     <div class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
                         
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                        <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
                            
@@ -52,14 +53,18 @@
                             <div class="col-span-2">
                                 <label for=""> Profile Image</label>
                                 <img width="100" height="100" src="{{user_profile.profileimg.url}}" />
+                                {% render_field form.profileimg class="shadow-none bg-gray-100" placeholder="First Name" aria-label="Username" aria-describedby="basic-addon1" %}
                                 <input type="file" name="image" value="" class="shadow-none bg-gray-100">
                             </div>
                             <div class="col-span-2">
                                 <label for="about">Bio</label>  
+                                {% render_field form.bio class="shadow-none bg-gray-100" placeholder="Bio" aria-label="Username" aria-describedby="basic-addon1" %}
                                 <textarea id="about" name="bio" rows="3"  class="shadow-none bg-gray-100">{{user_profile.bio}}</textarea>
                             </div> 
                             <div class="col-span-2">
                                 <label for=""> Location</label>
+                                {% render_field form.location class="shadow-none bg-gray-100" placeholder="Location" aria-label="Username" aria-describedby="basic-addon1" %}
+                                
                                 <input type="text" name="location" value="{{user_profile.location}}" class="shadow-none bg-gray-100">
                             </div>
                             

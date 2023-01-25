@@ -1,0 +1,52 @@
+{% if form.errors %}
+    <div id="errors">
+        <div class="inner" id="inner">
+            <!-- <p>There were some errors in the information you entered. Please correct the
+                following:</p> -->
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert" style="width:40%; margin-left:21rem;">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+            <div style="text-align: center;" class="container">
+                {% for field in form %}
+                    {% if field.errors %}
+                        <div class="text-center alert alert-danger" role="alert">{{ field.label }}: {{ field.errors|striptags }}</div>{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- /Error messaging -->
+{% endif %}
+
+
+<!-- {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %} -->
+{% if messages %}
+    {% for message in messages %}
+    <div id="message" class="container">
+    <div  {% if message.tags %} class="text-center alert alert-{{ message.tags }}" {% endif %} role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS_ERROR %}Important: {% endif %}
+        {{message}} 
+    </div>
+</div>
+    {% endfor %}
+{% endif %}
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$("#message").show();
+setTimeout(function() { $("#message").hide(); }, 6000)
+
+$("#inner").show();
+setTimeout(function() { $("#inner").hide(); }, 6000)
+</script>
