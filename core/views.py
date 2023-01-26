@@ -110,18 +110,48 @@ class LikePostView(LoginRequiredMixin, TemplateView):
 class ProfilePageView(LoginRequiredMixin, TemplateView):
    template_name = 'profile.html'
      
-
-
    def get(self, request, *args, **kwargs):
         user_object = User.objects.get(username=self.kwargs.get('pk'))
         user_profile = Profile.objects.get(user=user_object)
         user_posts = Post.objects.filter(user=self.kwargs.get('pk'))
         user_post_length = len(user_posts)
+        follower = self.request.user.username
+        user = self.kwargs.get('pk')
+
+        if FollowersCount.objects.filter(follower=follower, user=user).first():
+            button_text = "Unfollow"
+        else:
+            button_text = "follow"
+
+        user_followers = len(FollowersCount.objects.filter(user=self.kwargs.get('pk')))
+        user_followering = len(FollowersCount.objects.filter(follower=self.kwargs.get('pk')))
 
         context = {
             'user_profile':user_profile,
             'user_object': user_object,
             'user_posts': user_posts,
-            'user_post_length': user_post_length
-        }
+            'user_post_length': user_post_length,
+            'button_text': button_text,
+            'user_followers': user_followers,
+            'user_followering':user_followering
+         }
         return render(self.request, self.template_name, context=context)
+
+class FollowView(LoginRequiredMixin, TemplateView):
+   template_name = 'profile.html'
+     
+   def post(self, request, *args, **kwargs):
+      follower = self.request.POST['follower']
+      user = self.request.POST['user']
+      if FollowersCount.objects.filter(follower=follower, user=user).first():
+         delete_follower = FollowersCount.objects.get(follower=follower, user=user)
+         delete_follower.delete()
+         return redirect('profile', user)
+      else:
+         new_follower = FollowersCount.objects.create(follower=follower, user=user)
+         # new_follower.save()
+         return redirect('profile', user)
+
+
+   
+        
