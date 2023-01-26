@@ -167,5 +167,43 @@ class FollowView(LoginRequiredMixin, TemplateView):
          return redirect('profile', user)
 
 
+
+class SearchView(LoginRequiredMixin, TemplateView):
+   template_name = 'search.html'
+
+
+   def get(self, request, *args, **kwargs):
+        user_object = User.objects.get(username=request.user.username)
+        user_profile = Profile.objects.get(user=user_object)
+
+        context = {
+            'user_profile':user_profile,
+        }
+        return render(self.request, self.template_name, context=context)
+
+     
+   def post(self, request, *args, **kwargs):
+         username = self.request.POST['username']
+         username_object = User.objects.filter(username__icontains=username)
+
+         username_profile= []
+         username_profile_list = []
+
+         for users in username_object:
+            username_profile.append(users.id)
+
+         for ids in username_profile:
+            profile_lists = Profile.objects.filter(id_user=ids)
+            username_profile_list.append(profile_lists)   
+         
+         username_profile_list = list(chain(*username_profile_list))
+
+         context = {
+            'username_profile_list': username_profile_list
+         }
+
+
+         return render(self.request, self.template_name, context=context)
+
    
         
