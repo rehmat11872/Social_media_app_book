@@ -7,6 +7,7 @@ urlpatterns = [
     path('upload/', views.UploadView.as_view(), name='upload'),
     path('like-post/', views.LikePostView.as_view(), name='like-post'),
     path('profile/<str:pk>', views.ProfilePageView.as_view(), name='profile'),
+    path('follow/', views.FollowView.as_view(), name='follow'),
 
     
 
