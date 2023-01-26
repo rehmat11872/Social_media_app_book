@@ -89,7 +89,6 @@ class LikePostView(LoginRequiredMixin, TemplateView):
    template_name = 'index.html'
      
 
-
    def get(self, request, *args, **kwargs):
        username = self.request.user.username
        post_id = request.GET.get('post_id')
@@ -107,3 +106,22 @@ class LikePostView(LoginRequiredMixin, TemplateView):
          post.save()
          return redirect('/') 
        
+       
+class ProfilePageView(LoginRequiredMixin, TemplateView):
+   template_name = 'profile.html'
+     
+
+
+   def get(self, request, *args, **kwargs):
+        user_object = User.objects.get(username=self.kwargs.get('pk'))
+        user_profile = Profile.objects.get(user=user_object)
+        user_posts = Post.objects.filter(user=self.kwargs.get('pk'))
+        user_post_length = len(user_posts)
+
+        context = {
+            'user_profile':user_profile,
+            'user_object': user_object,
+            'user_posts': user_posts,
+            'user_post_length': user_post_length
+        }
+        return render(self.request, self.template_name, context=context)
