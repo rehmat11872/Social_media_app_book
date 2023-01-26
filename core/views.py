@@ -16,10 +16,24 @@ class IndexView(LoginRequiredMixin, TemplateView):
    def get(self, request, *args, **kwargs):
         user_object = User.objects.get(username=request.user.username)
         user_profile = Profile.objects.get(user=user_object)
-        posts = Post.objects.all()
+
+
+        user_following_list = []
+        feed = []
+
+        user_following = FollowersCount.objects.filter(follower=request.user.username)
+
+        for users in user_following:
+            user_following_list.append(users.user)
+
+        for usernames in user_following_list:
+            feed_lists = Post.objects.filter(user=usernames)
+            feed.append(feed_lists)
+
+        feed_list = list(chain(*feed))
         context = {
             'user_profile':user_profile,
-            'posts': posts
+            'posts': feed_list
         }
         return render(self.request, self.template_name, context=context)
 
